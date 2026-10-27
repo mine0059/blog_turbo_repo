@@ -4,6 +4,14 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { PrismaModule } from './prisma/prisma.module.js';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { PostModule } from './post/post.module.js';
+import { UserModule } from './user/user.module.js';
+import { CommentModule } from './comment/comment.module.js';
+import { TagModule } from './tag/tag.module.js';
+import { LikeModule } from './like/like.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -16,8 +24,19 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     //   appSecret: 'YOUR_APP_SECRET',
     //   serviceId: 'api',
     // }),
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), "src/graphql/schema.gql")
+    }),
     PrismaModule,
+    PostModule,
+    UserModule,
+    CommentModule,
+    TagModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
