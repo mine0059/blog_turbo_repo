@@ -58,4 +58,10 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# SQLite databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
 /src/generated/prisma

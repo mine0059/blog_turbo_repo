@@ -3,3 +3,12 @@ node_modules
 
 **/dist
 **/build
+
+# Turborepo
+.turbo
+
+# SQLite databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
