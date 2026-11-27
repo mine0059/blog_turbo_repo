@@ -1,15 +1,19 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { PostService } from './post.service.js';
+import { UseGuards } from '@nestjs/common';
+import { Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth/jwt-auth.guard.js';
 import { Post } from './entities/post.entity.js';
-import { CreatePostInput } from './dto/create-post.input.js';
-import { UpdatePostInput } from './dto/update-post.input.js';
+import { PostService } from './post.service.js';
 
 @Resolver(() => Post)
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [Post], { name: 'post' })
-  findAll() {
+  findAll(@CurrentUser() user: { id: number }) {
+    console.log('Authenticated User ID:', user.id);
+    console.log(`User: ${user}`);
     return this.postService.findAll();
   }
 }
